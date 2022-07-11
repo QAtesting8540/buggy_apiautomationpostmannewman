@@ -1,0 +1,1421 @@
+{
+	"info": {
+		"_postman_id": "14cef3f9-8fd0-457f-8174-41b997b4fd7f",
+		"name": "BuggyTestItAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "validRegistrationLogin",
+			"item": [
+				{
+					"name": "createValidRegistration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.unset(\"randomFullName\");\r",
+									"pm.environment.set(\"variable_key\", \"variable_value\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomFirstName}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validUserLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"access_token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"access_token\", \"Bearer\"+\" \"+jsonData.access_token);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"generated response body contains 'access_token'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+									"});\r",
+									"pm.test(\"token_type:Bearer\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.token_type).to.eql(\"Bearer\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"expires_in:3600\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.expires_in).to.eql(3600);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"generated response body contains 'refresh_token'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"refresh_token\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{existingusername}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/oauth/token",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProfile_firstname",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Hello22\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"gender\": \"Male\",\r\n    \"age\": \"24\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"hobby\": \"Reading\",\r\n    \"currentPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"newPasswordConfirmation\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users/profile",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile_lastname",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Hello22\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{@randomlastname}}\",\r\n    \"gender\": \"Male\",\r\n    \"age\": \"24\",\r\n    \"address\": \"12 Alexander ave\",\r\n    \"phone\": \"\",\r\n    \"hobby\": \"Reading\",\r\n    \"currentPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"newPasswordConfirmation\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users/profile",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile_phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Hello22\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"World\",\r\n    \"gender\": \"Male\",\r\n    \"age\": \"24\",\r\n    \"address\": \"12 Alexander ave\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"hobby\": \"Reading\",\r\n    \"currentPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"newPasswordConfirmation\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users/profile",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile_address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Hello22\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"World\",\r\n    \"gender\": \"Male\",\r\n    \"age\": \"24\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"hobby\": \"Reading\",\r\n    \"currentPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"newPasswordConfirmation\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users/profile",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "invalidRegistrationLogin_validations",
+			"item": [
+				{
+					"name": "usernameRequired_registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"username is required\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"username is required\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{lengthinvalid_password}}\",\r\n    \"confirmPassword\": \"{{lengthinvalid_password}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "first name is required_Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"first name is required\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"first name is required\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "last name is required_registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"last name is required\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"last name is required\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "password is required_registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"password is required\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"password is required\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{newusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "useralreadyexists_RegistrationError",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"UsernameExistsException: User already exists\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"UsernameExistsException: User already exists\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{existingusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{confirmPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordLowerCaseinvalidErrorAsUppercaseMissing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"{{$firstname}}\",\r\n    \"lastName\": \"{{$lastname}}\",\r\n    \"password\": \"{{lower_missing_password}}\",\r\n    \"confirmPassword\": \"{{lower_missing_password}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordmusthaveuppercase_Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{upper_missing_password}}\",\r\n    \"confirmPassword\": \"{{upper_missing_password}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordmissingSymbol_Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"InvalidPasswordException: Password did not conform with policy: Password must have symbol characters\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"InvalidPasswordException: Password did not conform with policy: Password must have symbol characters\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{symbol_missing_password}}\",\r\n    \"confirmPassword\": \"{{symbol_missing_password}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordlengthlessthan8char_registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"InvalidPasswordException: Password did not conform with policy: Password not long enough\"\r",
+									", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"InvalidPasswordException: Password did not conform with policy: Password not long enough\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "k51qryqov3.execute-api.ap-southeast-2.amazonaws.com",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{secondnewusername}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"password\": \"{{lengthinvalid_password}}\",\r\n    \"confirmPassword\": \"{{lengthinvalid_password}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/users",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InvalidUserLogin_unauthorised_401ResponseCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"type": "text"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "cross-site",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "invaliduser",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://k51qryqov3.execute-api.ap-southeast-2.amazonaws.com/prod/oauth/token",
+							"protocol": "https",
+							"host": [
+								"k51qryqov3",
+								"execute-api",
+								"ap-southeast-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"prod",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.environment.set(\"existingusername\", \"Hello22\");",
+					"pm.environment.set(\"password\", \"P@ssw0rd\");",
+					"pm.environment.set(\"confirmPassword\", \"P@ssw0rd\");",
+					"pm.environment.set(\"lower_missing_password\", \"password\");",
+					"pm.environment.set(\"upper_missing_password\", \"p1ssword\");",
+					"pm.environment.set(\"symbol_missing_password\", \"P1ssw0rd\");",
+					"pm.environment.set(\"lengthinvalid_password\", \"P@1swor\");",
+					"pm.environment.set(\"newusername\", \"$randomFirstName\");",
+					"pm.environment.set(\"secondnewusername\", \"$randomFullName\");",
+					"pm.environment.set(\"firstName\", \"$randomFirstName\");",
+					"pm.environment.set(\"lastName\", \"$randomLastName\");",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
